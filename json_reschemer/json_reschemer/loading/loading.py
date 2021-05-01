@@ -1,6 +1,7 @@
 from typing import Any
 from abc import ABC, abstractmethod
 
+
 class LoadStrategy(ABC):
     """Abstract Load Strategy Class
 
@@ -11,11 +12,13 @@ class LoadStrategy(ABC):
         super().__init__()
 
     @abstractmethod
-    def load(self, data:Any) -> None:
+    def load(self, data: Any) -> None:
         pass
+
 
 class CSVLoadStrategy(LoadStrategy):
     """Strategy class used to load csv data
+
 
     :param LoadStrategy: Extends LoadStrategy
     :type LoadStrategy: LoadStrategy
