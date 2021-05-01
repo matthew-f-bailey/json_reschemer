@@ -30,3 +30,19 @@ class Reschemer():
             )
 
         self._mappings = mappings
+
+    @property
+    def load_strategy(self):
+        return self._load_strategy
+
+    @load_strategy.setter
+    def load_strategy(self, strategy: LoadStrategy):
+
+        # ! Throw if not a LoadStrategy object
+        if not isinstance(strategy, LoadStrategy):
+            raise TypeError(
+                "Mappings attribute must be of type {}; \
+                Got {}".format(type(strategy), strategy)
+            )
+
+        self._load_strategy = strategy

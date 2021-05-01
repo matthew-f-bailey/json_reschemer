@@ -16,7 +16,7 @@ JSON Reschemer
 
 
 
-Package to facilitate rescheming of json
+Package to facilitate rescheming data to json
 
 
 * Free software: MIT license

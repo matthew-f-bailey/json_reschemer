@@ -31,7 +31,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Package to facilitate rescheming of json",
+    description="Package to facilitate rescheming data to json",
     entry_points={
         'console_scripts': [
             'json_reschemer=json_reschemer.cli:run',

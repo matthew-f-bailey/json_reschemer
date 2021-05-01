@@ -1,3 +1,4 @@
+from csv import DictReader
 from typing import Any
 from abc import ABC, abstractmethod
 
@@ -25,3 +26,13 @@ class CSVLoadStrategy(LoadStrategy):
     """
     def __init__(self) -> None:
         super().__init__()
+
+    def load(self, path: str, columns: list=None, **reader_kwargs) -> dict:
+
+        with open(path) as csvfile:
+            reader = csv.reader(csvfile, reader_kwargs)
+            return [print(r) for r in DictReader(csvfile)]
+
+if __name__ == '__main__':
+    csv = CSVLoadStrategy()
+    csv.load()
