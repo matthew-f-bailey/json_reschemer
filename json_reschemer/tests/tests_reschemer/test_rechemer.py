@@ -1,6 +1,7 @@
 from jsonpath_ng import parse, jsonpath
 
 def sample_json():
+
     return {
         'foo': [
             {'baz': 1},
