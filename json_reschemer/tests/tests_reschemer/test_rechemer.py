@@ -1,40 +1,43 @@
-from jsonpath_ng import parse, jsonpath
+import unittest
 
-def sample_json():
-
-    return {
-        'foo': [
-            {'baz': 1},
-            {'baz': 2},
-            {'bar': [
-                3,
-                4,
-                5
-            ]},
-        ]
-    }
-
-def test(mappings):
-
-    to_find = list(mappings.keys())[0]
-    to_create = list(mappings.values())[0]
-
-    # A robust parser, not just a regex. (Makes powerful extensions possible; see below)
-    jsonpath_expr = parse(to_find)
-
-    # Extracting values is easy
-    matches = [match.value for match in jsonpath_expr.find(sample_json())]
-    print(matches)
-    # [1, 2]
-
-    # Create the structure of whats passed in
-    create_expr = parse(to_create)
-    print(create_expr)
+from json_reschemer.reschemer.reschemer import Reschemer
+# from json_reschemer.reschemer.r_exceptions import MissingItemDefinitionError
 
 
+class TestReschemer(unittest.TestCase):
 
+    def setUp(self) -> None:
 
-if __name__ == "__main__":
-    mappings = {'foo[*].baz,bar[*]': "numbers[*]"}
+        self.simple_mappings = {
+            "ITEM_DEFINITION": "foo",
+            "bar": "baz"
+        }
 
-    test(mappings)
+        self.nodef_mappings = {"bar": "baz"}
+
+    def test_pop_out_definition(self):
+
+        reschemer = Reschemer(mappings=self.simple_mappings)
+
+        self.assertEqual(
+            reschemer.item_definition,
+            "foo"
+        )
+
+    def test_remaining_mappings(self):
+
+        reschemer = Reschemer(mappings=self.simple_mappings)
+
+        self.assertEqual(
+            reschemer.mappings,
+            {"bar": "baz"}
+        )
+
+    def test_optional_defintion(self):
+
+        reschemer = Reschemer(mappings=self.nodef_mappings)
+
+        self.assertEqual(
+            reschemer.item_definition,
+            "*"
+        )
