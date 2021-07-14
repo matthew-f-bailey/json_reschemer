@@ -105,3 +105,6 @@ ENV/
 .vscode/settings.json
 .vscode/
 .vscode
+
+# my custom windmake
+winmake.exe
