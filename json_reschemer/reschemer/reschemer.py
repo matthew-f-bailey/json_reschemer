@@ -4,7 +4,13 @@ class Reschemer():
     """TestSummary
     """
     def __init__(self, mappings: dict, item_definition: str = "$") -> None:
+        """Initalize Res
 
+        :param mappings: [description]
+        :type mappings: dict
+        :param item_definition: [description], defaults to "$"
+        :type item_definition: str, optional
+        """
         # Pull out item definition
         try:
             self._item_definition = mappings.pop("ITEM_DEFINITION")
@@ -14,20 +20,42 @@ class Reschemer():
 
         self._mappings = mappings
 
-    def _parse(self, input):
+    def _parse_mapping_values(self, input) -> dict:
+        """Takes some collection input repr of json, finds the jsonpath
+        values within the input, and resassigns them to a new dict
+        containing the values new reschemed location
+
+        :param input: a collection represting json
+        :type input: dict, list
+        :return: new dictionary with keys of jsonpath pointing to new
+        reschemed location and their corresponding values
+        :rtype: dict
+        """
 
         # Create new dict w/ destination as key and matches as values
         mapped_vals = dict()
         for mapping in self._mappings:
-            expr = parse(f"{self._item_definition}.{mapping}")
+            # Root Item Def plus mapping
+            full_path = f"{self._item_definition}.{mapping}"
+            # Parse out current mapping
+            expr = parse(full_path)
+            # pull out all values for mapping
             values = [match.value for match in expr.find(input)]
+            # If only 1 matched, make it a string
             if len(values)==1:
                 values = values[0]
-            mapped_vals.update({self.mappings[mapping]:values})
-        print(mapped_vals)
+            # Add to new dict with key as the mapping value
+            mapped_vals.update({self._mappings[mapping]:values})
+
+        return mapped_vals
 
     def rescheme(self, input):
-        self._parse(input)
+        """method to call steps needed for rescheming the input
+
+        :param input: a collection represting json
+        :type input: dict, list
+        """
+        remapped = self._parse_mapping_values(input)
 
     # Getters/Setters
     @property

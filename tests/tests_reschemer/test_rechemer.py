@@ -43,7 +43,7 @@ class TestMappings(unittest.TestCase):
 
         self.assertEqual(
             reschemer.item_definition,
-            "*"
+            "$"
         )
 
 
@@ -52,17 +52,45 @@ class TestPathExpressions(unittest.TestCase):
     def setUp(self) -> None:
         return super().setUp()
 
-    def test_pulling_ids(self):
-
-        mappings = {
-            "ITEM_DEFINITION": "[*]",
-            "id": "[*].identifier",
-            "name": "[*].name"
-        }
+    def test_simple_parse_mapping_values(self):
 
         simple_mappings = {
-            "foo":"thisIsBar"
+            "foo": "thisIsBar"
+        }
+
+        expected = {
+            "thisIsBar": "bar"
         }
 
         reschemer = Reschemer(mappings=simple_mappings)
-        print(reschemer.rescheme(SIMPLE_JSON))
+        self.assertEqual(
+            reschemer._parse_mapping_values(SIMPLE_JSON),
+            expected
+        )
+
+    def test_complex_parse_mapping_values(self):
+
+        mappings = {
+            "ITEM_DEFINITION": "[*]",
+            "id": "identifiers",
+            "batters.batter[*].id": "batter_ids"
+        }
+
+        expected = {
+            "identifiers": ['0001', '0002', '0003'],
+            "batter_ids": [
+                '1001',
+                '1002',
+                '1003',
+                '1004',
+                '1001',
+                '1001',
+                '1002',
+            ]
+        }
+
+        reschemer = Reschemer(mappings=mappings)
+        self.assertEqual(
+            reschemer._parse_mapping_values(COMPLEX_LIST_JSON),
+            expected
+        )
