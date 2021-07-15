@@ -36,7 +36,7 @@ class Reschemer():
         mapped_vals = dict()
         for mapping in self._mappings:
             # Root Item Def plus mapping
-            full_path = f"{self._item_definition}.{mapping}"
+            full_path = "{}.{}".format(self._item_definition, mapping)
             # Parse out current mapping
             expr = parse(full_path)
             # pull out all values for mapping
